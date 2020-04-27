@@ -18,7 +18,7 @@ jobs:
         image: postgres:12.1
         ports: ["5432:5432"]
         # we use this to provide a healthcheck since postgres container does not have it by default
-        option: --health-cmd pg_isready --health-interval 10s --health-timeout -5s --health-retries 5
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout -5s --health-retries 5
 
     steps:
       # lets first checkout, using fetch-depth: 0 with actions/checkout@v2 for all commits checkout
