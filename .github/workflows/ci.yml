@@ -15,7 +15,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:12.1
+        image: postgres:11.6-alpine
         ports: ["5432:5432"]
         # we use this to provide a healthcheck since postgres container does not have it by default
         options: --health-cmd pg_isready --health-interval 10s --health-timeout -5s --health-retries 5
