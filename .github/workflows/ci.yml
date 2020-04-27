@@ -1,0 +1,66 @@
+name: z-Lab CI/CD Tests & Deploy
+
+# set the tests to run on both actions [push and pull request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # this install the latest ubuntu for the app environment
+
+    services:
+      postgres:
+        image: postgres:11.6-alpine
+        ports: ["5432:5432"]
+        # we use this to provide a healthcheck since postgres container does not have it by default
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      # lets first checkout, using fetch-depth: 0 with actions/checkout@v2 for all commits checkout
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6.3
+
+      - name: Install Postgres
+        run: sudo apt-get -yqq install libpq-dev # this installs all required packages including postgres client
+
+      # this builds application, install bundler & all necessary gems for the application, and setting up db
+      - name: Build Application
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          RAILS_ENV: test
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bin/rails db:setup
+          bin/rails db:migrate
+
+      # running the test
+      - name: Run Tests
+        env:
+          PGHOST: localhost
+          PGUSER: postgres
+          RAILS_ENV: test
+        run: |
+          bundle exec rake test
+          bundle exec rake test:system
+
+      # push a master branch to heroku for deployment
+      - name: Deploy to Heroku
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP_NAME: "z-lab"
+        if: github.ref == 'refs/heads/master' && job.status == 'success'
+        run: |
+          git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git origin/master
