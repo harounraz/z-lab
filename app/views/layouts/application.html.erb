@@ -11,6 +11,20 @@
   </head>
 
   <body>
-    <%= yield %>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <%= render 'layouts/navbar/nav' %>
+    </nav>
+
+    <div class="container fluid">
+      <%= yield %>
+    </div>
+
+    <div class="fixed-bottom">
+      <footer class="container footer mt-out py-3">
+        <%= render 'layouts/footer/footer' %>
+      </footer>
+    </div>
+
   </body>
 </html>
