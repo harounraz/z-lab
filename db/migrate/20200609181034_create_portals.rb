@@ -5,7 +5,7 @@ class CreatePortals < ActiveRecord::Migration[6.0]
       t.text :description
       t.string :semester
       t.string :slug
-      t.belongs_to :teacher, null: false, foreign_key: true
+      t.references :teacher, null: false, index: true, foreign_key: true
 
       t.timestamps
     end
