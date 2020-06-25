@@ -5,22 +5,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import App from '../components/App'
+import Nav from '../components/Home/Nav';
+import Footer from '../components/Home/Footer';
 
-const Hello = props => (
-  <div>Hello {props.name}!</div>
-)
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-Hello.defaultProps = {
-  name: 'David'
-}
-
-Hello.propTypes = {
-  name: PropTypes.string
-}
+// import '../stylesheets/application.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <Hello name="React" />,
+    <Router>
+      <Route component={Nav} />
+      <Route path="/" component={App} />
+      <Route component={Footer} />
+    </Router>,
     document.body.appendChild(document.createElement('div')),
   )
 })
