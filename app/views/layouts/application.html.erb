@@ -1,30 +1,29 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>ZLab</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= stylesheet_pack_tag 'application', media: 'all' %>
+    <%= javascript_pack_tag 'application' %>
+    <%= javascript_pack_tag 'index' %>
 
-  <body>
+</head>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <%= render 'layouts/navbar/nav' %>
-    </nav>
+<body>
+
 
     <div class="container fluid">
-      <%= yield %>
+        <%= yield %>
     </div>
 
     <div class="fixed-bottom">
-      <footer class="container footer mt-out py-3">
-        <%= render 'layouts/footer/footer' %>
-      </footer>
+
     </div>
 
-  </body>
+</body>
+
 </html>
